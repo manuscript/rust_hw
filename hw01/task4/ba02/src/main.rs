@@ -1,20 +1,38 @@
-use std::io::{self, BufRead};
+use std::io::{self, Read};
 
 fn main() -> io::Result<()> {
-    let stdin = io::stdin();
+    let mut stdin = io::stdin().lock();
+    let mut buffer = Vec::new();
+    
+    // Читаем все данные из stdin до EOF
+    stdin.read_to_end(&mut buffer)?;
+    
     let mut lines = 0;
     let mut words = 0;
-    let mut bytes = 0;
-
-    for line in stdin.lock().lines() {
-        let line = line?;
-        bytes += line.len() + 1; // +1 для символа \n
-        lines += 1;
-
-        // Подсчёт слов: разбиваем строку по пробельным символам и фильтруем пустые строки
-        words += line.split_whitespace().count();
+    let mut in_word = false;
+    
+    for &byte in &buffer {
+        // Подсчёт строк: каждый символ \n увеличивает счётчик
+        if byte == b'\n' {
+            lines += 1;
+        }
+        
+        // Подсчёт слов с отслеживанием состояния
+        if byte.is_ascii_whitespace() {
+            // Пробельный символ — выходим из слова (если были внутри)
+            in_word = false;
+        } else {
+            // Непробельный символ
+            if !in_word {
+                // Начало нового слова
+                words += 1;
+                in_word = true;
+            }
+        }
     }
-
+    
+    let bytes = buffer.len();
+    
     println!("{} {} {}", lines, words, bytes);
     Ok(())
 }

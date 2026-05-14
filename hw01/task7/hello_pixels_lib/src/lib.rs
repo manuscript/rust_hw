@@ -24,7 +24,10 @@ pub fn parse_bitmap_8x8(lines: [&str; 8]) -> [u8; 8] {
 
 /// Преобразует массив из 8 байтов в картинку 8×8
 pub fn render_bitmap_8x8(bytes: [u8; 8]) -> [String; 8] {
-    let mut lines = [String::new(); 8];
+    let mut lines = [
+        String::new(), String::new(), String::new(), String::new(),
+        String::new(), String::new(), String::new(), String::new()
+    ];
 
     for (row_idx, &byte) in bytes.iter().enumerate() {
         let mut line = String::with_capacity(8);

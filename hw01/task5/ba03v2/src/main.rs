@@ -38,14 +38,14 @@ mod tests {
     fn test_empty_vector() {
         let mut empty: Vec<String> = vec![];
         insertion_sort(&mut empty);
-        assert_eq!(empty, vec![]);
+        assert_eq!(empty, Vec::<String>::new());
     }
 
     #[test]
     fn test_single_element() {
         let mut single = vec!["hello".to_string()];
         insertion_sort(&mut single);
-        assert_eq!(single, vec!["hello"]);
+        assert_eq!(single, vec!["hello".to_string()]);
     }
 
     #[test]
